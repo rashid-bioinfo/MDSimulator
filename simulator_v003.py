@@ -41,8 +41,8 @@ class MDSimulator:
         self.solvate_btn = Button(self.f2, text="Define box & Solvate", fg="green", font="Roman 11 bold", borderwidth=2, command=self.runSolvate)
         self.ions_btn = Button(self.f2, text="Add ions", fg="green", font="Roman 11 bold", borderwidth=2, command=self.runIons)
         self.minimize_btn = Button(self.f2, text="Energy Minimization", fg="green", font="Roman 11 bold", borderwidth=2, command=self.runMinimize)
-        self.equal_btn = Button(self.f2, text="Equlibration", fg="green", font="Roman 11 bold", borderwidth=2, command=self.dummy)
-        self.prod_btn = Button(self.f2, text="Production MD", fg="green", font="Roman 11 bold", borderwidth=2, command=self.dummy)
+        self.equal_btn = Button(self.f2, text="Equlibration", fg="green", font="Roman 11 bold", borderwidth=2, command=self.runEqual)
+        self.prod_btn = Button(self.f2, text="Production MD", fg="green", font="Roman 11 bold", borderwidth=2, command=self.runProd)
 
         
         # packing of butons ---
@@ -85,7 +85,7 @@ class MDSimulator:
     ### -----   Function for running toplogy module ((Step 1))
     def runTopology(self):
         self.ToplogyWindow = Toplevel(self.master)
-        self.ToplogyWindow.geometry("500x150") # width x length
+        self.ToplogyWindow.geometry("500x200") # width x length
         self.ToplogyWindow.resizable(False, False)
         self.ToplogyWindow.title("Generate Toplogy")
         self.app = TopologyModule(self.ToplogyWindow)
@@ -93,7 +93,7 @@ class MDSimulator:
      ### -----   Function for defining box and solvation ((Step 2))
     def runSolvate(self):
         self.SolvateWindow = Toplevel(self.master)
-        self.SolvateWindow.geometry("500x150") # width x length
+        self.SolvateWindow.geometry("500x200") # width x length
         self.SolvateWindow.resizable(False, False)
         self.SolvateWindow.title("Define Box & Solvation")
         self.app = SolvateModule(self.SolvateWindow)
@@ -101,7 +101,7 @@ class MDSimulator:
      ### -----   Function for addion ions ((Step 3))
     def runIons(self):
         self.IonsWindow = Toplevel(self.master)
-        self.IonsWindow.geometry("500x150") # width x length
+        self.IonsWindow.geometry("500x200") # width x length
         self.IonsWindow.resizable(False, False)
         self.IonsWindow.title("Add Ions")
         self.app = IonsModule(self.IonsWindow)
@@ -109,10 +109,26 @@ class MDSimulator:
      ### -----   Function for energy minimization ((Step 4))
     def runMinimize(self):
         self.MinimizeWindow = Toplevel(self.master)
-        self.MinimizeWindow.geometry("500x150") # width x length
+        self.MinimizeWindow.geometry("500x200") # width x length
         self.MinimizeWindow.resizable(False, False)
         self.MinimizeWindow.title("Energy Minimization")
         self.app = MinimizeModule(self.MinimizeWindow)
+
+     ### -----   Function for energy Equilibration ((Step 5))
+    def runEqual(self):
+        self.EqualWindow = Toplevel(self.master)
+        self.EqualWindow.geometry("500x200") # width x length
+        self.EqualWindow.resizable(False, False)
+        self.EqualWindow.title("Equilibration")
+        self.app = EqualModule(self.EqualWindow)
+    
+     ### -----   Function for energy Production MD ((Step 6))
+    def runProd(self):
+        self.ProdWindow = Toplevel(self.master)
+        self.ProdWindow.geometry("500x200") # width x length
+        self.ProdWindow.resizable(False, False)
+        self.ProdWindow.title("Production MD")
+        self.app = ProdModule(self.ProdWindow)
 
     ### ----- dummy function
     def dummy(self):
@@ -304,7 +320,7 @@ class IonsModule():
     #               Ions Module Methods         #
     ##---------------------------------------------##
 
-    ### -- Function for browse button to load protein file
+    ### -- Function for browsing MDP protein file
     def editFile(self):   
         os.system('gedit ions.mdp')
 
@@ -360,7 +376,7 @@ class MinimizeModule():
     #               Minimize Module Methods         #
     ##---------------------------------------------##
 
-    ### -- Function for browse button to load protein file
+    ### -- Function for browsing MDP protein file
     def editFile(self):   
         os.system('gedit minim.mdp')
 
@@ -369,6 +385,147 @@ class MinimizeModule():
     def runMinim(self):
         os.system(f'gmx grompp -f minim.mdp -c protein_solv_ions.gro -p topol.top -o em.tpr')
         os.system(f'gmx mdrun -v -deffnm em ')
+
+    ### -----   Function for EXIT button ----- ###
+    def exit(self):
+        self.master.destroy()
+##______________________________________________________________________##
+#                                                                        #      
+#                       Step 5: Equilibration                            #
+##______________________________________________________________________##
+
+class EqualModule():
+    def __init__(self, master):
+
+        self.master = master 
+
+        ##---------------------------------------------##           
+        #               Equal. Module GUI             #
+        ##---------------------------------------------##
+
+        ### -- Browse button for loading protien file 
+
+        self.f1 = Frame(self.master, borderwidth=5, relief=GROOVE)
+        self.f1.pack(side="top", pady=25)
+
+        # NVT ensemble (constant Number of particles, Volume, and Temperature)
+        self.protein_label = Label(self.f1, text="NVT MDP File: ", font="Roman 10 bold")
+        self.protein_label.grid(row=1, column=1, sticky=W,  pady=5, ipadx=5, ipady=3)
+        self.protein_label = Label(self.f1, text="Use default settings or customize: ", font="Roman 10")
+        self.protein_label.grid(row=1, column=2, sticky=W,  pady=5, ipadx=5, ipady=3)
+
+        self.protein_browse = Button(self.f1, text="Edit file", command=self.editNvtFile)
+        self.protein_browse.grid(row=1, column=3, padx=5, pady=5)
+        
+        # NPT ensemble (constant Number of particles, Pressure, and Temperature)
+        self.protein_label = Label(self.f1, text="NPT MDP File: ", font="Roman 10 bold")
+        self.protein_label.grid(row=2, column=1, sticky=W,  pady=5, ipadx=5, ipady=3)
+        self.protein_label = Label(self.f1, text="Use default settings or customize: ", font="Roman 10")
+        self.protein_label.grid(row=2, column=2, sticky=W,  pady=5, ipadx=5, ipady=3)
+
+        self.protein_browse = Button(self.f1, text="Edit file", command=self.editNptFile)
+        self.protein_browse.grid(row=2, column=3, padx=5, pady=5)
+
+        ### -- Buttons of button at the bottom ((Run, Exit)) 
+
+        self.f2 = Frame(self.master, borderwidth=5, relief=GROOVE)
+        self.f2.pack(side="bottom")
+        
+        ### -----   Buttons for running the script, clearing and exiting the program ----- ###
+        self.run_btn = Button(self.f2, text="Run", fg="blue", font="Roman 11 bold", borderwidth=2, command=self.runEqual)
+        self.exit_btn = Button(self.f2, text="Main", fg="green", font="Roman 11 bold", borderwidth=2, command=self.exit)
+
+        self.run_btn.grid(row=3, column=1, padx=1, ipadx=5)
+        self.exit_btn.grid(row=3, column=2, padx=1, ipadx=1)
+
+    ##---------------------------------------------##           
+    #               Equal. Module Methods         #
+    ##---------------------------------------------##
+
+    ### -- Function for browsing NVT file
+    def editNvtFile(self):   
+        # NVT ensemble (constant Number of particles, Volume, and Temperature)
+        os.system('gedit nvt.mdp') 
+
+    ### -- Function for browsing NPT file
+    def editNptFile(self):  
+        # NPT ensemble (constant Number of particles, Pressure, and Temperature)
+        os.system('gedit npt.mdp') 
+
+    ### -- Function for running gmx command for equilibration
+    def runEqual(self):
+        # NVT ensemble (constant Number of particles, Volume, and Temperature)
+        os.system(f'gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o nvt.tpr')
+        os.system(f'gmx mdrun -deffnm nvt')
+
+        # NPT ensemble (constant Number of particles, Pressure, and Temperature)
+        os.system(f'gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p topol.top -o npt.tpr')
+        os.system(f'gmx mdrun -deffnm npt')
+
+
+    ### -----   Function for EXIT button ----- ###
+    def exit(self):
+        self.master.destroy()
+
+##______________________________________________________________________##
+#                                                                        #      
+#                       Step 6: Production MD                            #
+##______________________________________________________________________##
+
+class ProdModule():
+    def __init__(self, master):
+
+        self.master = master 
+
+        ##---------------------------------------------##           
+        #               Prod. Module GUI             #
+        ##---------------------------------------------##
+
+        ### -- Browse button for loading protien file 
+
+        self.f1 = Frame(self.master, borderwidth=5, relief=GROOVE)
+        self.f1.pack(side="top", pady=25)
+
+        # NVT ensemble (constant Number of particles, Volume, and Temperature)
+        self.protein_label = Label(self.f1, text="Load MDP File: ", font="Roman 10 bold")
+        self.protein_label.grid(row=1, column=1, sticky=W,  pady=5, ipadx=5, ipady=3)
+        self.protein_label = Label(self.f1, text="Use default settings or customize: ", font="Roman 10")
+        self.protein_label.grid(row=1, column=2, sticky=W,  pady=5, ipadx=5, ipady=3)
+
+        self.protein_browse = Button(self.f1, text="Edit file", command=self.editFile)
+        self.protein_browse.grid(row=1, column=3, padx=5, pady=5)
+        
+        # Number of CPUs/Threads, want to allocate for running MD simulations
+        self.protein_label = Label(self.f1, text="Number of CPUs: ", font="Roman 10 bold")
+        self.protein_label.grid(row=2, column=1, sticky=W,  pady=5, ipadx=5, ipady=3)
+        self.cpu_value = IntVar()
+        self.cpu_entry = Entry(self.f1, textvariable=self.cpu_value, width=10)
+        self.cpu_entry.grid(row=2, column=2, padx=1, pady=5)
+
+        ### -- Buttons of button at the bottom ((Run, Exit)) 
+
+        self.f2 = Frame(self.master, borderwidth=5, relief=GROOVE)
+        self.f2.pack(side="bottom")
+        
+        ### -----   Buttons for running the script, clearing and exiting the program ----- ###
+        self.run_btn = Button(self.f2, text="Run", fg="blue", font="Roman 11 bold", borderwidth=2, command=self.runEqual)
+        self.exit_btn = Button(self.f2, text="Main", fg="green", font="Roman 11 bold", borderwidth=2, command=self.exit)
+
+        self.run_btn.grid(row=3, column=1, padx=1, ipadx=5)
+        self.exit_btn.grid(row=3, column=2, padx=1, ipadx=1)
+
+    ##---------------------------------------------##           
+    #               Prod. Module Methods         #
+    ##---------------------------------------------##
+
+    ### -- Function for browsing MDP file
+    def editFile(self):   
+        os.system('gedit md.mdp') 
+
+    ### -- Function for running gmx command for equilibration
+    def runEqual(self):
+        os.system(f'gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o md_0_1.tpr')
+        os.system(f'gmx mdrun -deffnm md_0_1 -nt {self.cpu_value.get()}')
 
     ### -----   Function for EXIT button ----- ###
     def exit(self):
