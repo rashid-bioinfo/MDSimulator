@@ -280,6 +280,11 @@ class MDSimulator:
                     message='You can analyze the results only after successfully running MD Simulations. Have you already run simulation?')
         if (answer):
             showinfo("Well done!", "Go ahead with the analysis module")
+            self.AnalysisWindow = Toplevel(self.master)
+            self.AnalysisWindow.geometry("500x200") # width x length
+            self.AnalysisWindow.resizable(False, False)
+            self.AnalysisWindow.title("Analysis")
+            self.app = AnalysisModule(self.AnalysisWindow)
 
             # Turns Production MD run btton green, and disable this button
             self.prod_btn["bg"] = "green"
@@ -316,7 +321,7 @@ class TopologyModule():
         self.f1.pack(side="top", pady=25)
 
         self.protein_label = Label(self.f1, text="Load Protein File: ", font="Roman 10 bold")
-        self.protein_label.grid(row=1, sticky=W,  pady=5, ipadx=5, ipady=3)
+        self.protein_label.grid(row=1, column=1, sticky=W,  pady=5, ipadx=5, ipady=3)
 
         self.protein_value = StringVar()
         self.protein_entry = Entry(self.f1, textvariable=self.protein_value, width=25)
@@ -324,6 +329,22 @@ class TopologyModule():
 
         self.protein_browse = Button(self.f1, text="Browse", command=self.fileBrowse)
         self.protein_browse.grid(row=1, column=3, padx=5, pady=5)
+
+         # Combobox dropdown menu
+        self.water_label = Label(self.f1, text="Water Model: ", font="Roman 10 bold")
+        self.water_label.grid(row=2, column=1, sticky=W,  pady=5, ipadx=5, ipady=3)
+
+        self.param_value = StringVar(value=' spce')
+        self.param_combo = ttk.Combobox(self.f1, width = 10, textvariable = self.param_value)
+
+        self.param_combo['values'] = (' spce', 
+                          ' spc',
+                          ' tip3p',
+                          ' tip4p',
+                          ' tip5p',
+                          ' none')
+        
+        self.param_combo.grid(row=2, column=2, padx=12, sticky=W, pady=10)
 
         ### -- Buttons of button at the bottom ((Run, Exit)) 
 
@@ -357,10 +378,10 @@ class TopologyModule():
 
     ### -- Function for running gmx command for gnerating topology file    
     def runTopology(self):
-        os.system(f'gmx pdb2gmx -f {self.protein_value.get()} -o {outDir_value.get()}/protein_processed.gro -p {outDir_value.get()}/topol.top -i {outDir_value.get()}/posre.itp -water spce')
+        os.system(f'gmx pdb2gmx -f {self.protein_value.get()} -o {outDir_value.get()}/protein_processed.gro -p {outDir_value.get()}/topol.top -i {outDir_value.get()}/posre.itp -water {self.param_value.get()}')
         # os.system(f'gmx pdb2gmx -f 1aki_clean.pdb -o protein_processed.gro -water spce')
 
-    ### -----   Function for EXIT button ----- ###
+    ### -----   Function for MAIN button ----- ###
     def exit(self):
         self.master.destroy()
 ##______________________________________________________________________##
@@ -431,7 +452,7 @@ class SolvateModule():
         # solvation
         os.system(f'gmx solvate -cp {outDir_value.get()}/protein_newbox.gro -cs spc216.gro -o {outDir_value.get()}/protein_solv.gro -p {outDir_value.get()}/topol.top')
 
-    ### -----   Function for EXIT button ----- ###
+    ### -----   Function for MAIN button ----- ###
     def exit(self):
         self.master.destroy()
 
@@ -488,7 +509,7 @@ class IonsModule():
         os.system(f'gmx grompp -f {mdp_value.get()}/ions.mdp -c {outDir_value.get()}/protein_solv.gro -p {outDir_value.get()}/topol.top -o {outDir_value.get()}/ions.tpr -po {outDir_value.get()}/mdout.mdp')
         os.system(f'gmx genion -s {outDir_value.get()}/ions.tpr -o {outDir_value.get()}/protein_solv_ions.gro -p {outDir_value.get()}/topol.top -pname NA -nname CL -neutral')
 
-    ### -----   Function for EXIT button ----- ###
+    ### -----   Function for MAIN button ----- ###
     def exit(self):
         self.master.destroy()
 ##______________________________________________________________________##
@@ -544,7 +565,7 @@ class MinimizeModule():
         os.system(f'gmx grompp -f {mdp_value.get()}/minim.mdp -c {outDir_value.get()}/protein_solv_ions.gro -p {outDir_value.get()}/topol.top -o {outDir_value.get()}/em.tpr -po {outDir_value.get()}/mdout.mdp')
         os.system(f'gmx mdrun -v -deffnm {outDir_value.get()}/em')
 
-    ### -----   Function for EXIT button ----- ###
+    ### -----   Function for MAIN button ----- ###
     def exit(self):
         self.master.destroy()
 ##______________________________________________________________________##
@@ -621,7 +642,7 @@ class EqualModule():
         os.system(f'gmx mdrun -v -deffnm {outDir_value.get()}/npt')
 
 
-    ### -----   Function for EXIT button ----- ###
+    ### -----   Function for MAIN button ----- ###
     def exit(self):
         self.master.destroy()
 
@@ -682,13 +703,100 @@ class ProdModule():
 
     ### -- Function for running gmx command for equilibration
     def runEqual(self):
-        os.system(f'gmx grompp -f {mdp_value.get()}/npt.mdp -c {outDir_value.get()}/nvt.gro -r {outDir_value.get()}/nvt.gro -t {outDir_value.get()}/nvt.cpt -p {outDir_value.get()}/topol.top -o {outDir_value.get()}/npt.tpr -po {outDir_value.get()}/mdout.mdp')
-        os.system(f'gmx mdrun -v -deffnm {outDir_value.get()}/npt')
-
         os.system(f'gmx grompp -f {mdp_value.get()}/md.mdp -c {outDir_value.get()}/npt.gro -t {outDir_value.get()}/npt.cpt -p {outDir_value.get()}/topol.top -o {outDir_value.get()}/md_0_1.tpr -po {outDir_value.get()}/mdout.mdp')
         os.system(f'gmx mdrun -v -deffnm {outDir_value.get()}/md_0_1 -nt {self.cpu_value.get()}')
 
-    ### -----   Function for EXIT button ----- ###
+    ### -----   Function for MAIN button ----- ###
+    def exit(self):
+        self.master.destroy()
+
+##______________________________________________________________________##
+#                                                                        #      
+#                       Final Step: Analysis                             #
+##______________________________________________________________________##
+
+class AnalysisModule():
+    def __init__(self, master):
+
+        self.master = master 
+
+        ##---------------------------------------------##           
+        #               Analysis Module GUI             #
+        ##---------------------------------------------##
+
+        ### -- Browse button for loading protien file 
+
+        self.f1 = Frame(self.master, borderwidth=5, relief=GROOVE)
+        self.f1.pack(side="top", pady=25)
+
+        # Apply system compactness
+        self.sys_compactness = Label(self.f1, text="Apply system compactness? ", font="Roman 10 bold")
+        self.sys_compactness.grid(row=1, column=1, sticky=W,  pady=5, ipady=3)
+        # Radio button for yes and no
+        self.compact_value = IntVar(value=2)
+        self.compact_yes = Radiobutton(self.f1, text="Yes",  variable=self.compact_value, value=1)
+        self.compact_no = Radiobutton(self.f1, text="No",  variable=self.compact_value, value=2)
+        self.compact_yes.grid(row=1, column=2, sticky=W, padx=5)
+        self.compact_no.grid(row=1, column=2, padx=20)
+        
+        # Drop down menu for analyses
+        self.analysis_label = Label(self.f1, text="Visualize plot for the paramter: ", font="Roman 10 bold")
+        self.analysis_label.grid(row=2, column=1, sticky=W,  pady=5, ipadx=2, ipady=3)
+
+        # Combobox dropdown menu
+        self.param_value = StringVar(value=' Root mean square deviation')
+        self.param_combo = ttk.Combobox(self.f1, width = 24, textvariable = self.param_value)
+
+        self.param_combo['values'] = (' Root mean square deviation', 
+                          ' Radius of gyration',
+                          ' Potential energy',
+                          ' Temperature')
+
+        self.param_combo.grid(row=2, column=2, padx=1, sticky=W, pady=10)
+        
+        ### -- Buttons of button at the bottom ((Run, Exit)) 
+
+        self.f2 = Frame(self.master, borderwidth=5, relief=GROOVE)
+        self.f2.pack(side="bottom")
+        
+        ### -----   Buttons for running the script, clearing and exiting the program ----- ###
+        self.run_btn = Button(self.f2, text="Run", fg="blue", font="Roman 11 bold", borderwidth=2, command=self.runAna)
+        self.exit_btn = Button(self.f2, text="Main", fg="green", font="Roman 11 bold", borderwidth=2, command=self.exit)
+
+        self.run_btn.grid(row=3, column=1, padx=1, ipadx=5)
+        self.exit_btn.grid(row=3, column=2, padx=1, ipadx=1)
+
+    ##---------------------------------------------##           
+    #               Analysis Module Methods         #
+    ##---------------------------------------------##
+
+    ### -- Function for running gmx command for Analysis
+    def runAna(self):     
+        # Making system compact after MD simulations | Apply compactness: Yes
+        if (self.compact_value.get() == 1): 
+            os.system(f'gmx trjconv -s {outDir_value.get()}/md_0_1.tpr -f {outDir_value.get()}/md_0_1.xtc -o {outDir_value.get()}/md_0_1_noPBC.xtc -pbc mol -center')  
+        #  draw plot for root mean square deviation
+        if (self.param_combo.current() == 0):
+            os.system(f'gmx rms -s {outDir_value.get()}/md_0_1.tpr -f {outDir_value.get()}/md_0_1_noPBC.xtc -o {outDir_value.get()}/rmsd.xvg -tu ns')
+            os.system(f'xmgrace {outDir_value.get()}/rmsd.xvg')   
+
+        #  draw plot for radius of gyration
+        if (self.param_combo.current() == 1):
+            os.system(f'gmx gyrate -s {outDir_value.get()}/md_0_1.tpr -f {outDir_value.get()}/md_0_1_noPBC.xtc -o {outDir_value.get()}/gyrate.xvg')
+            os.system(f'xmgrace {outDir_value.get()}/gyrate.xvg')    
+        
+        #  draw plot for potential energy
+        if (self.param_combo.current() == 2):
+            os.system(f'gmx energy -f {outDir_value.get()}/em.edr -o {outDir_value.get()}/potential.xvg')
+            os.system(f'xmgrace {outDir_value.get()}/potential.xvg')    
+        
+        #  draw plot for temperature
+        if (self.param_combo.current() == 3):
+            os.system(f'gmx energy -f {outDir_value.get()}/nvt.edr -o {outDir_value.get()}/temperature.xvg')
+            os.system(f'xmgrace {outDir_value.get()}/temperature.xvg')    
+
+
+    ### -----   Function for MAIN button ----- ###
     def exit(self):
         self.master.destroy()
 
