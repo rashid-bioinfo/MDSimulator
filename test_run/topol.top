@@ -1,8 +1,8 @@
 ;
-;	File '/home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/topol.top' was generated
+;	File '/home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/topol.top' was generated
 ;	By user: rashid (1000)
 ;	On host: rashid-pc
-;	At date: Sun Sep  4 16:07:28 2022
+;	At date: Sat Sep 10 21:56:32 2022
 
 ;
 ;	This is a standalone topology file
@@ -13,7 +13,7 @@
 ;	Executable:   /usr/local/gromacs/bin/gmx
 ;	Data prefix:  /usr/local/gromacs
 ;	Command line:
-;	  gmx pdb2gmx -f /1aki_clean.pdb -o /home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/protein_processed.gro -p /home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/topol.top -i /home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/posre.itp -water spce
+;	  gmx pdb2gmx -f /1aki_clean.pdb -o /home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/protein_processed.gro -p /home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/topol.top -i /home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/posre.itp -water spce
 ;	Force field was read from the standard GROMACS share directory.
 ;
 
@@ -18383,7 +18383,7 @@ Protein_chain_A     3
 
 ; Include Position restraint file
 #ifdef POSRES
-#include "/home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/posre.itp"
+#include "/home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/posre.itp"
 #endif
 
 ; Include water topology

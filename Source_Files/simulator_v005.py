@@ -150,11 +150,16 @@ class MDSimulator:
 
     ### -----   Function for running toplogy module ((Step 1))
     def runTopology(self):
-        self.ToplogyWindow = Toplevel(self.master)
-        self.ToplogyWindow.geometry("500x200") # width x length
-        self.ToplogyWindow.resizable(False, False)
-        self.ToplogyWindow.title("Generate Toplogy")
-        self.app = TopologyModule(self.ToplogyWindow)
+        # proceeds only when output file directory is assigned
+        if (os.path.exists(outDir_value.get())):
+            self.ToplogyWindow = Toplevel(self.master)
+            self.ToplogyWindow.geometry("500x200") # width x length
+            self.ToplogyWindow.resizable(False, False)
+            self.ToplogyWindow.title("Generate Toplogy")
+            self.app = TopologyModule(self.ToplogyWindow)
+        else:
+            showerror("Output files directory is needed!", "Please define output files directory to proceed further.")
+
     
      ### -----   Function for defining box and solvation ((Step 2))
     def runSolvate(self):
@@ -166,11 +171,16 @@ class MDSimulator:
 
      ### -----   Function for addion ions ((Step 3))
     def runIons(self):
-        self.IonsWindow = Toplevel(self.master)
-        self.IonsWindow.geometry("500x200") # width x length
-        self.IonsWindow.resizable(False, False)
-        self.IonsWindow.title("Add Ions")
-        self.app = IonsModule(self.IonsWindow)
+        # proceed only when MDP files directory is defined
+        if (os.path.exists(mdp_value.get())):
+            self.IonsWindow = Toplevel(self.master)
+            self.IonsWindow.geometry("500x200") # width x length
+            self.IonsWindow.resizable(False, False)
+            self.IonsWindow.title("Add Ions")
+            self.app = IonsModule(self.IonsWindow)
+        else:
+            showerror("MDP files directory is needed!", "Please define MDP files directory to proceed further.")
+
 
      ### -----   Function for energy minimization ((Step 4))
     def runMinimize(self):
@@ -200,17 +210,20 @@ class MDSimulator:
     ### -----   Arrow button function ((Step 1 - Generate Toplogy))
     def arrTopology(self):
         
-        for item in os.listdir(outDir_value.get()):
-            if "protein_processed.gro" == item:
-                # print (f"file ({item}) found")
-                self.topology_btn["bg"] = "green"
-                self.topology_btn["state"] = "disabled"
-                
-                # when protein_processed.gro is found then previous buttons: disabled & next buttons: enabled
-                self.topology_arr["state"] = "disabled"
-                self.solvate_btn["bg"] = "yellow"
-                self.solvate_btn["state"] = "normal"
-                self.solvate_arr["state"] = "normal"
+        if (os.path.exists(outDir_value.get())):
+            for item in os.listdir(outDir_value.get()):
+                if "protein_processed.gro" == item:
+                    # print (f"file ({item}) found")
+                    self.topology_btn["bg"] = "green"
+                    self.topology_btn["state"] = "disabled"
+                    
+                    # when protein_processed.gro is found then previous buttons: disabled & next buttons: enabled
+                    self.topology_arr["state"] = "disabled"
+                    self.solvate_btn["bg"] = "yellow"
+                    self.solvate_btn["state"] = "normal"
+                    self.solvate_arr["state"] = "normal"
+        else:
+            showerror("Output files directory is needed!", "Please define output files directory to proceed further.")
 
     ### -----   Arrow button function ((Step 2 - Define box & solvate))
     def arrSolvate(self):
@@ -378,7 +391,9 @@ class TopologyModule():
 
     ### -- Function for running gmx command for gnerating topology file    
     def runTopology(self):
+        showinfo("Hint for creating topology!", "At the prompt, type a number to select a force field for generating topology of the protein.")
         os.system(f'gmx pdb2gmx -f {self.protein_value.get()} -o {outDir_value.get()}/protein_processed.gro -p {outDir_value.get()}/topol.top -i {outDir_value.get()}/posre.itp -water {self.param_value.get()}')
+            
         # os.system(f'gmx pdb2gmx -f 1aki_clean.pdb -o protein_processed.gro -water spce')
 
     ### -----   Function for MAIN button ----- ###
@@ -506,6 +521,7 @@ class IonsModule():
 
     ### -- Function for running gmx command for adding ions
     def runIons(self):
+        showinfo("Hint for adding ions!", "At the prompt, choose group 13 'SOL' for embedding ions.")
         os.system(f'gmx grompp -f {mdp_value.get()}/ions.mdp -c {outDir_value.get()}/protein_solv.gro -p {outDir_value.get()}/topol.top -o {outDir_value.get()}/ions.tpr -po {outDir_value.get()}/mdout.mdp')
         os.system(f'gmx genion -s {outDir_value.get()}/ions.tpr -o {outDir_value.get()}/protein_solv_ions.gro -p {outDir_value.get()}/topol.top -pname NA -nname CL -neutral')
 
@@ -749,8 +765,10 @@ class AnalysisModule():
 
         self.param_combo['values'] = (' Root mean square deviation', 
                           ' Radius of gyration',
-                          ' Potential energy',
-                          ' Temperature')
+                          ' Energy minimzation',
+                          ' Temperature',
+                          ' Pressure',
+                          ' Density')
 
         self.param_combo.grid(row=2, column=2, padx=1, sticky=W, pady=10)
         
@@ -774,26 +792,48 @@ class AnalysisModule():
     def runAna(self):     
         # Making system compact after MD simulations | Apply compactness: Yes
         if (self.compact_value.get() == 1): 
+            showinfo("Hint!", "At the prompt, select 1 'Protein' as the group to be centered and 0 'System' for output.")
             os.system(f'gmx trjconv -s {outDir_value.get()}/md_0_1.tpr -f {outDir_value.get()}/md_0_1.xtc -o {outDir_value.get()}/md_0_1_noPBC.xtc -pbc mol -center')  
+
+        #___________________________________#
+        #              Draw Plots           #
+        #___________________________________# 
+      
         #  draw plot for root mean square deviation
         if (self.param_combo.current() == 0):
+            showinfo("Hint for RMSD plot!", "At the prompt, choose 4 'Backbone' for both the least-squares fit and the group for RMSD calculation.")
             os.system(f'gmx rms -s {outDir_value.get()}/md_0_1.tpr -f {outDir_value.get()}/md_0_1_noPBC.xtc -o {outDir_value.get()}/rmsd.xvg -tu ns')
             os.system(f'xmgrace {outDir_value.get()}/rmsd.xvg')   
 
         #  draw plot for radius of gyration
         if (self.param_combo.current() == 1):
+            showinfo("Hint for Radius of gyration plot!", "At the prompt, choose group 1 (Protein) for analysis.")
             os.system(f'gmx gyrate -s {outDir_value.get()}/md_0_1.tpr -f {outDir_value.get()}/md_0_1_noPBC.xtc -o {outDir_value.get()}/gyrate.xvg')
             os.system(f'xmgrace {outDir_value.get()}/gyrate.xvg')    
         
-        #  draw plot for potential energy
+        #  draw plot for energy minimzation
         if (self.param_combo.current() == 2):
+            showinfo("Hint for energy minimization plot!", "At the prompt, type '10 0' to select Potential '10'; zero '0' terminates input.")
             os.system(f'gmx energy -f {outDir_value.get()}/em.edr -o {outDir_value.get()}/potential.xvg')
             os.system(f'xmgrace {outDir_value.get()}/potential.xvg')    
         
         #  draw plot for temperature
         if (self.param_combo.current() == 3):
+            showinfo("Hint for temperature plot!", "At the prompt, type '16 0' to select Temperature '16'; zero '0' terminates input.")
             os.system(f'gmx energy -f {outDir_value.get()}/nvt.edr -o {outDir_value.get()}/temperature.xvg')
             os.system(f'xmgrace {outDir_value.get()}/temperature.xvg')    
+        
+        #  draw plot for pressure
+        if (self.param_combo.current() == 4):
+            showinfo("Hint for pressure plot!", "At the prompt, type '17 0' to select Pressure '17'; zero '0' terminates input.")
+            os.system(f'gmx energy -f {outDir_value.get()}/npt.edr -o {outDir_value.get()}/pressure.xvg')
+            os.system(f'xmgrace {outDir_value.get()}/pressure.xvg')    
+
+        #  draw plot for density
+        if (self.param_combo.current() == 5):
+            showinfo("Hint for density plot!", "At the prompt, type '23 0' to select Density '23'; zero '0' terminates input.")
+            os.system(f'gmx energy -f {outDir_value.get()}/npt.edr -o {outDir_value.get()}/density.xvg')
+            os.system(f'xmgrace {outDir_value.get()}/density.xvg')    
 
 
     ### -----   Function for MAIN button ----- ###

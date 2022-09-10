@@ -1,5 +1,5 @@
-Log file opened on Sun Sep  4 17:10:00 2022
-Host: rashid-pc  pid: 68725  rank ID: 0  number of ranks:  1
+Log file opened on Sat Sep 10 22:03:49 2022
+Host: rashid-pc  pid: 21591  rank ID: 0  number of ranks:  1
                    :-) GROMACS - gmx mdrun, VERSION 5.1.1 (-:
 
                             GROMACS is written by:
@@ -29,7 +29,7 @@ GROMACS:      gmx mdrun, VERSION 5.1.1
 Executable:   /usr/local/gromacs/bin/gmx
 Data prefix:  /usr/local/gromacs
 Command line:
-  gmx mdrun -v -deffnm /home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/md_0_1 -nt 4
+  gmx mdrun -v -deffnm /home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/md_0_1 -nt 4
 
 GROMACS version:    VERSION 5.1.1
 Precision:          single
@@ -137,7 +137,7 @@ Input Parameters:
    comm-mode                      = Linear
    nstcomm                        = 100
    bd-fric                        = 0
-   ld-seed                        = 1696681615
+   ld-seed                        = 3882162326
    emtol                          = 10
    emstep                         = 0.01
    niter                          = 20
@@ -359,37 +359,37 @@ J. Chem. Phys. 126 (2007) pp. 014101
 -------- -------- --- Thank You --- -------- --------
 
 There are: 33876 Atoms
-Initial temperature: 302.291 K
+Initial temperature: 298.88 K
 
-Started mdrun on rank 0 Sun Sep  4 17:10:01 2022
+Started mdrun on rank 0 Sat Sep 10 22:03:49 2022
            Step           Time         Lambda
               0        0.00000        0.00000
 
    Energies (kJ/mol)
            Bond          Angle    Proper Dih. Ryckaert-Bell.          LJ-14
-    1.42816e+03    3.67590e+03    2.45084e+02    1.94051e+03    2.68663e+03
+    1.34777e+03    3.71849e+03    2.45073e+02    1.82366e+03    2.67725e+03
      Coulomb-14        LJ (SR)  Disper. corr.   Coulomb (SR)   Coul. recip.
-    7.68092e+03    9.21853e+04   -4.56232e+03   -6.31034e+05    2.95302e+03
+    7.83990e+03    9.40275e+04   -4.55830e+03   -6.32559e+05    3.03751e+03
       Potential    Kinetic En.   Total Energy    Temperature Pres. DC (bar)
-   -5.22800e+05    8.63267e+04   -4.36474e+05    3.02008e+02   -2.25772e+02
+   -5.22400e+05    8.53344e+04   -4.37065e+05    2.98536e+02   -2.25375e+02
  Pressure (bar)   Constr. rmsd
-   -6.75888e+01    2.84197e-06
+    3.14130e+02    3.00941e-06
 
            Step           Time         Lambda
             500        1.00000        0.00000
 
-Writing checkpoint, step 500 at Sun Sep  4 17:10:10 2022
+Writing checkpoint, step 500 at Sat Sep 10 22:03:59 2022
 
 
    Energies (kJ/mol)
            Bond          Angle    Proper Dih. Ryckaert-Bell.          LJ-14
-    1.38122e+03    3.69402e+03    2.39675e+02    1.92308e+03    2.69771e+03
+    1.48901e+03    3.88536e+03    2.51438e+02    1.89758e+03    2.65444e+03
      Coulomb-14        LJ (SR)  Disper. corr.   Coulomb (SR)   Coul. recip.
-    7.81330e+03    9.17003e+04   -4.53440e+03   -6.31371e+05    3.00500e+03
+    7.67089e+03    9.38579e+04   -4.53611e+03   -6.32936e+05    2.98247e+03
       Potential    Kinetic En.   Total Energy    Temperature Pres. DC (bar)
-   -5.23451e+05    8.57845e+04   -4.37667e+05    3.00111e+02   -2.23021e+02
+   -5.22783e+05    8.61039e+04   -4.36679e+05    3.01228e+02   -2.23189e+02
  Pressure (bar)   Constr. rmsd
-   -2.74286e+02    3.03481e-06
+    1.83408e+02    2.98499e-06
 
 	<======  ###############  ==>
 	<====  A V E R A G E S  ====>
@@ -399,29 +399,29 @@ Writing checkpoint, step 500 at Sun Sep  4 17:10:10 2022
 
    Energies (kJ/mol)
            Bond          Angle    Proper Dih. Ryckaert-Bell.          LJ-14
-    1.44605e+03    3.74189e+03    2.44200e+02    1.90680e+03    2.68965e+03
+    1.44573e+03    3.81130e+03    2.48369e+02    1.86046e+03    2.65736e+03
      Coulomb-14        LJ (SR)  Disper. corr.   Coulomb (SR)   Coul. recip.
-    7.74078e+03    9.27474e+04   -4.54905e+03   -6.31718e+05    2.97793e+03
+    7.75471e+03    9.34018e+04   -4.54429e+03   -6.32209e+05    2.99351e+03
       Potential    Kinetic En.   Total Energy    Temperature Pres. DC (bar)
-   -5.22772e+05    8.60301e+04   -4.36742e+05    3.00970e+02   -2.24464e+02
+   -5.22580e+05    8.57301e+04   -4.36850e+05    2.99921e+02   -2.23994e+02
  Pressure (bar)   Constr. rmsd
-   -2.26630e+01    0.00000e+00
+    6.94854e+01    0.00000e+00
 
           Box-X          Box-Y          Box-Z
-    6.95848e+00    6.95848e+00    6.95848e+00
+    6.96090e+00    6.96090e+00    6.96090e+00
 
    Total Virial (kJ/mol)
-    3.00387e+04   -5.35806e+02   -6.46510e+02
-   -5.34913e+02    2.83950e+04    9.48704e+02
-   -6.49110e+02    9.52085e+02    2.82893e+04
+    2.78864e+04    5.17272e+02   -5.64161e+02
+    5.22141e+02    2.76048e+04    1.14789e+02
+   -5.55288e+02    1.24755e+02    2.81251e+04
 
    Pressure (bar)
-   -1.26386e+02    6.11800e+01    6.72642e+01
-    6.10931e+01    2.07619e+01   -8.55017e+01
-    6.75200e+01   -8.58369e+01    3.76355e+01
+    5.58920e+01   -5.28069e+01    6.79046e+01
+   -5.32870e+01    1.03929e+02   -8.33383e+00
+    6.70295e+01   -9.31552e+00    4.86355e+01
 
       T-Protein  T-non-Protein
-    3.03521e+02    3.00773e+02
+    2.98795e+02    3.00007e+02
 
 
 	M E G A - F L O P S   A C C O U N T I N G
@@ -433,11 +433,11 @@ Writing checkpoint, step 500 at Sun Sep  4 17:10:10 2022
 
  Computing:                               M-Number         M-Flops  % Flops
 -----------------------------------------------------------------------------
- Pair Search distance check             333.645404        3002.809     0.5
- NxN Ewald Elec. + LJ [F]              4335.201408      286123.293    51.4
- NxN Ewald Elec. + LJ [V&F]              52.542256        5622.021     1.0
- NxN Ewald Elec. [F]                   3821.516064      233112.480    41.9
- NxN Ewald Elec. [V&F]                   46.306704        3889.763     0.7
+ Pair Search distance check             333.176204        2998.586     0.5
+ NxN Ewald Elec. + LJ [F]              4329.537904      285749.502    51.4
+ NxN Ewald Elec. + LJ [V&F]              52.445216        5611.638     1.0
+ NxN Ewald Elec. [F]                   3815.602032      232751.724    41.9
+ NxN Ewald Elec. [V&F]                   46.231616        3883.456     0.7
  1,4 nonbonded interactions               2.558106         230.230     0.0
  Calc Weights                            50.915628        1832.963     0.3
  Spread Q Bspline                      1086.200064        2172.400     0.4
@@ -458,7 +458,7 @@ Writing checkpoint, step 500 at Sun Sep  4 17:10:10 2022
  Constraint-Vir                           1.676217          40.229     0.0
  Settle                                   5.328636        1721.149     0.3
 -----------------------------------------------------------------------------
- Total                                                  556682.521   100.0
+ Total                                                  555927.061   100.0
 -----------------------------------------------------------------------------
 
 
@@ -469,26 +469,26 @@ On 1 MPI rank, each using 4 OpenMP threads
  Computing:          Num   Num      Call    Wall time         Giga-Cycles
                      Ranks Threads  Count      (s)         total sum    %
 -----------------------------------------------------------------------------
- Neighbor search        1    4         26       0.517          4.952   5.3
- Force                  1    4        501       6.341         60.731  64.5
- PME mesh               1    4        501       1.794         17.179  18.2
- NB X/F buffer ops.     1    4        976       0.159          1.526   1.6
- Write traj.            1    4          2       0.262          2.514   2.7
- Update                 1    4        501       0.308          2.947   3.1
- Constraints            1    4        501       0.362          3.464   3.7
- Rest                                           0.086          0.822   0.9
+ Neighbor search        1    4         26       0.473          4.534   4.8
+ Force                  1    4        501       6.263         59.986  64.0
+ PME mesh               1    4        501       1.783         17.079  18.2
+ NB X/F buffer ops.     1    4        976       0.202          1.938   2.1
+ Write traj.            1    4          2       0.286          2.737   2.9
+ Update                 1    4        501       0.300          2.872   3.1
+ Constraints            1    4        501       0.384          3.682   3.9
+ Rest                                           0.090          0.860   0.9
 -----------------------------------------------------------------------------
- Total                                          9.828         94.134 100.0
+ Total                                          9.782         93.687 100.0
 -----------------------------------------------------------------------------
  Breakdown of PME mesh computation
 -----------------------------------------------------------------------------
- PME spread/gather      1    4       1002       1.422         13.623  14.5
- PME 3D-FFT             1    4       1002       0.319          3.058   3.2
- PME solve Elec         1    4        501       0.039          0.375   0.4
+ PME spread/gather      1    4       1002       1.379         13.210  14.1
+ PME 3D-FFT             1    4       1002       0.341          3.269   3.5
+ PME solve Elec         1    4        501       0.039          0.372   0.4
 -----------------------------------------------------------------------------
 
                Core t (s)   Wall t (s)        (%)
-       Time:       36.530        9.828      371.7
+       Time:       36.059        9.782      368.6
                  (ns/day)    (hour/ns)
-Performance:        8.809        2.725
-Finished mdrun on rank 0 Sun Sep  4 17:10:10 2022
+Performance:        8.851        2.712
+Finished mdrun on rank 0 Sat Sep 10 22:03:59 2022

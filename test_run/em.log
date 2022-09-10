@@ -1,5 +1,5 @@
-Log file opened on Sun Sep  4 16:45:10 2022
-Host: rashid-pc  pid: 66285  rank ID: 0  number of ranks:  1
+Log file opened on Sat Sep 10 22:01:28 2022
+Host: rashid-pc  pid: 21059  rank ID: 0  number of ranks:  1
                    :-) GROMACS - gmx mdrun, VERSION 5.1.1 (-:
 
                             GROMACS is written by:
@@ -29,7 +29,7 @@ GROMACS:      gmx mdrun, VERSION 5.1.1
 Executable:   /usr/local/gromacs/bin/gmx
 Data prefix:  /usr/local/gromacs
 Command line:
-  gmx mdrun -v -deffnm /home/rashid/8_Dr_Yasir/Holoenzyme_simulator_git/test/em
+  gmx mdrun -v -deffnm /home/rashid/8_Research_Final/Holoenzyme_simulator_git/test_run/em
 
 GROMACS version:    VERSION 5.1.1
 Precision:          single
@@ -135,7 +135,7 @@ Input Parameters:
    comm-mode                      = Linear
    nstcomm                        = 100
    bd-fric                        = 0
-   ld-seed                        = 540564584
+   ld-seed                        = 3403931895
    emtol                          = 1000
    emstep                         = 0.01
    niter                          = 20
@@ -337,7 +337,7 @@ J. Comp. Chem. 13 (1992) pp. 952-962
 -------- -------- --- Thank You --- -------- --------
 
 Initiating Steepest Descents
-Started Steepest Descents on rank 0 Sun Sep  4 16:45:11 2022
+Started Steepest Descents on rank 0 Sat Sep 10 22:01:29 2022
 
 Steepest Descents:
    Tolerance (Fmax)   =  1.00000e+03
@@ -8142,28 +8142,28 @@ On 1 MPI rank, each using 4 OpenMP threads
  Computing:          Num   Num      Call    Wall time         Giga-Cycles
                      Ranks Threads  Count      (s)         total sum    %
 -----------------------------------------------------------------------------
- Neighbor search        1    4        831      13.021        249.427  16.7
- Force                  1    4        831      13.721        262.826  17.6
- PME mesh               1    4        831       7.083        135.679   9.1
- NB X/F buffer ops.     1    4        831       1.672         32.029   2.1
- Constraints            1    4       1661       1.597         30.587   2.0
- Rest                                          40.968        784.751  52.5
+ Neighbor search        1    4        831      13.265        254.100  16.4
+ Force                  1    4        831      14.074        269.602  17.4
+ PME mesh               1    4        831       6.852        131.250   8.5
+ NB X/F buffer ops.     1    4        831       2.173         41.619   2.7
+ Constraints            1    4       1661       1.909         36.561   2.4
+ Rest                                          42.810        820.052  52.8
 -----------------------------------------------------------------------------
- Total                                         78.061       1495.298 100.0
+ Total                                         81.083       1553.184 100.0
 -----------------------------------------------------------------------------
  Breakdown of PME mesh computation
 -----------------------------------------------------------------------------
- PME spread/gather      1    4       1662       4.512         86.424   5.8
- PME 3D-FFT             1    4       1662       2.191         41.971   2.8
- PME solve Elec         1    4        831       0.250          4.791   0.3
+ PME spread/gather      1    4       1662       4.600         88.112   5.7
+ PME 3D-FFT             1    4       1662       1.870         35.829   2.3
+ PME solve Elec         1    4        831       0.254          4.856   0.3
 -----------------------------------------------------------------------------
 
-NOTE: 17 % of the run time was spent in pair search,
+NOTE: 16 % of the run time was spent in pair search,
       you might want to increase nstlist (this has no effect on accuracy)
 
 
                Core t (s)   Wall t (s)        (%)
-       Time:      175.890       78.061      225.3
+       Time:      175.723       81.083      216.7
                (steps/hour)
-Performance:        38323.7
-Finished mdrun on rank 0 Sun Sep  4 16:46:29 2022
+Performance:        36895.6
+Finished mdrun on rank 0 Sat Sep 10 22:02:50 2022
